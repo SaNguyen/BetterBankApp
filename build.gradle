@@ -1,0 +1,45 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id "org.openapi.generator" version "5.1.1"
+}
+
+group = 'com.acme'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.data:spring-data-commons'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
+    implementation 'javax.validation:validation-api'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/openapi/account-info-openapi.yaml".toString()
+    outputDir = "$rootDir/".toString()
+    apiPackage = "com.acme.bankapp.api"
+    invokerPackage = "com.acme.bankapp.invoker"
+    modelPackage = "com.acme.bankapp.model"
+    configOptions = [
+            dateLibrary: "java11"
+    ]
+}

@@ -1,0 +1,59 @@
+package com.acme.bankapp.model;
+
+import java.util.Objects;
+import io.swagger.annotations.ApiModel;
+import com.fasterxml.jackson.annotation.JsonValue;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+/**
+ * Identifies the nature of the postal address.
+ */
+public enum OBAddressTypeCode {
+  
+  BUSINESS("Business"),
+  
+  CORRESPONDENCE("Correspondence"),
+  
+  DELIVERYTO("DeliveryTo"),
+  
+  MAILTO("MailTo"),
+  
+  POBOX("POBox"),
+  
+  POSTAL("Postal"),
+  
+  RESIDENTIAL("Residential"),
+  
+  STATEMENT("Statement");
+
+  private String value;
+
+  OBAddressTypeCode(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static OBAddressTypeCode fromValue(String value) {
+    for (OBAddressTypeCode b : OBAddressTypeCode.values()) {
+      if (b.value.equals(value)) {
+        return b;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+}
+

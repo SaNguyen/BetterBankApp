@@ -1,5 +1,6 @@
 package io.betterbanking.web;
 
+import io.betterbanking.BetterBankingApplication;
 import io.betterbanking.entity.Transaction;
 import io.betterbanking.service.TransactionService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.actuate.metrics.AutoConfigureMetrics;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,7 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 
-@SpringBootTest
+@SpringBootTest(classes={BetterBankingApplication.class})
 @AutoConfigureMockMvc
 class TransactionComponentTestRestAssuredMockMvc {
 
@@ -44,7 +46,7 @@ class TransactionComponentTestRestAssuredMockMvc {
                                 .builder()
                                 .type("credit")
                                 .date(new Date())
-                                .accountNumber(1)
+                                .accountNumber(111)
                                 .currency("USD")
                                 .amount(100.00)
                                 .merchantName("acme")
@@ -56,7 +58,7 @@ class TransactionComponentTestRestAssuredMockMvc {
                 //.standaloneSetup(new TransactionController(new TransactionService()))
 
                 .when()
-                .get("/api/v1/transactions/1")
+                .get("/api/v1/transactions/111")
                 .then()
                 .statusCode(200)
                 .body(("[0].type"),equalTo("credit"))

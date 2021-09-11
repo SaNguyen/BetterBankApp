@@ -1,5 +1,6 @@
 package io.betterbanking.web;
 
+import io.betterbanking.BetterBankingApplication;
 import io.betterbanking.entity.Transaction;
 import io.betterbanking.service.TransactionService;
 import io.restassured.mapper.TypeRef;
@@ -24,23 +25,26 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 
-
+@SpringBootTest(classes = {BetterBankingApplication.class})
 public class TransactionComponentTestUsingStandaloneSetup {
+    @Autowired
+    private TransactionController transactionController;
+
     @Test
     @DisplayName("TestEndToEnd using standaloneSetup")
     public void  TestEndToEnd(){
         List<Map<String, Object>> transactions =
                 RestAssuredMockMvc.
                     given()
-                            .standaloneSetup(new TransactionController(new TransactionService()))
+                            .standaloneSetup(transactionController)
                             .auth().none()
                             .when()
-                        .get("/api/v1/transactions/1")
+                        .get("/api/v1/transactions/111")
                     .as(new TypeRef<List<Map<String, Object>>>() {});
 //        System.out.println(transactions);
         assertThat(transactions,hasSize(1));
         assertThat(transactions.get(0).get("type"), equalTo("credit"));
-        assertThat(transactions.get(0).get("accountNumber"), equalTo(1));
+        assertThat(transactions.get(0).get("accountNumber"), equalTo(111));
         assertThat(transactions.get(0).get("merchantName"), equalTo("acme"));
         assertThat(transactions.get(0).get("amount"), equalTo(100.0));
 

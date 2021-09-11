@@ -40,6 +40,12 @@ dependencies {
 	testImplementation 'org.assertj:assertj-core:3.6.1'
 
 	testImplementation 'io.rest-assured:spring-mock-mvc:3.0.0'
+
+	testImplementation "org.testcontainers:testcontainers:1.15.3"
+	testImplementation "org.testcontainers:junit-jupiter:1.15.3"
+	testImplementation "org.testcontainers:mysql:1.15.3"
+
+
 }
 
 test {

@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(classes={BetterBankingApplication.class})
 @AutoConfigureMockMvc
 class TransactionControllerTest {
 
@@ -20,10 +20,10 @@ class TransactionControllerTest {
     @Test
     public void findAllByAccountNumber() throws Exception {
 
-        mockMvc.perform(get("/api/v1/transactions/1"))
+        mockMvc.perform(get("/api/v1/transactions/111"))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.[0].type").value("credit"))
-                        .andExpect(jsonPath("$.[0].accountNumber").value(1))
+                        .andExpect(jsonPath("$.[0].accountNumber").value(111))
                         .andExpect(jsonPath("$.[0].currency").value("USD"))
                         .andExpect(jsonPath("$.[0].amount").value(100.0));
 

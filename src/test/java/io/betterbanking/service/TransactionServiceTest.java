@@ -6,6 +6,7 @@ import org.apache.catalina.LifecycleState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Date;
 import java.util.List;
@@ -23,12 +24,12 @@ class TransactionServiceTest {
 
     @Test
     void findAllByAccountNumber() {
-        List<Transaction> re =  transactionService.findAllByAccountNumber(1);
+        List<Transaction> re =  transactionService.findAllByAccountNumber(111);
         assertNotNull(re);
         assertEquals(1, re.size());
         assertNotEquals(10, re.size());
         assertEquals("credit", re.get(0).getType());
-        assertEquals(1, re.get(0).getAccountNumber());
+        assertEquals(111, re.get(0).getAccountNumber());
         assertEquals("USD", re.get(0).getCurrency());
         assertEquals(100.00, re.get(0).getAmount());
         assertEquals("acme", re.get(0).getMerchantName());

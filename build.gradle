@@ -2,6 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.4.2'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id "org.openapi.generator" version "5.1.1"
+
 }
 
 group = 'io.better-banking'
@@ -28,19 +30,12 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok:1.18.20'
 	annotationProcessor 'org.projectlombok:lombok:1.18.20'
-
 	testCompileOnly 'org.projectlombok:lombok:1.18.20'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
-	compileOnly 'org.projectlombok:lombok:1.18.20'
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
-	testCompileOnly 'org.projectlombok:lombok:1.18.20'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 	testImplementation 'org.assertj:assertj-core:3.6.1'
-
 	testImplementation 'io.rest-assured:spring-mock-mvc:3.0.0'
-
 	testImplementation "org.testcontainers:testcontainers:1.15.3"
 	testImplementation "org.testcontainers:junit-jupiter:1.15.3"
 	testImplementation "org.testcontainers:mysql:1.15.3"
@@ -62,3 +57,27 @@ task srcZip(type: Zip) {
 		println "Path to zip: $archivePath.path"
 	}
 }
+
+openApiGenerate {
+	generatorName = "spring"
+	inputSpec = "$rootDir/openapi/account-info-openapi.yaml".toString()
+	outputDir = "$rootDir/".toString()
+	apiPackage = "generated.api"
+	invokerPackage = "generated.invoker"
+	modelPackage = "generated.model"
+	configOptions = [
+			dateLibrary: "java11"
+	]
+}
+
+tasks.register('copyGeneratedModel', Copy) {
+	from "$rootDir/src/main/java/generated/model"
+	into "$rootDir/src/main/java/io/betterbanking/model"
+}
+
+
+tasks.register('deleteGenerated', Delete) {
+	delete "$rootDir/src/main/java/generated"
+}
+
+clean.dependsOn deleteGenerated

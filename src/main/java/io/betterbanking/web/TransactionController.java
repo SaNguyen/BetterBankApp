@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/transactions")
+@RequestMapping("/api/v1")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -23,10 +23,9 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping("/{accountNumber}")
-    public List<TransactionDto> findAllByAccountNumber(@PathVariable("accountNumber") final Integer accountNumber) {
-        List<Transaction> list = transactionService.findAllByAccountNumber(accountNumber);
-        return list.stream().map(TransactionDto::apply).collect(Collectors.toList());
+    @GetMapping("/accounts/{accountNumber}/transactions")
+    public List<Transaction> findAllByAccountNumber(@PathVariable("accountNumber") final Integer accountNumber) {
+        return transactionService.findAllByAccountNumber(accountNumber);
 
     }
 

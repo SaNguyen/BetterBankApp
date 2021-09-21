@@ -21,4 +21,5 @@ public class Transaction {
     private Double amount;
     private String merchantName;
     private String merchantLogo;
+
 }

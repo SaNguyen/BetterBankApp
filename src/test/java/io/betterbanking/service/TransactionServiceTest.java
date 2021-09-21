@@ -23,7 +23,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void findAllByAccountNumber() {
+    void findAllByAccountNumber() throws Exception{
         List<Transaction> re =  transactionService.findAllByAccountNumber(111);
         assertNotNull(re);
         assertEquals(1, re.size());

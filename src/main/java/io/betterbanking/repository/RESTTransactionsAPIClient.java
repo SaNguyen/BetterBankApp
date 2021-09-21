@@ -66,10 +66,7 @@ public class RESTTransactionsAPIClient implements TransactionApiClient {
     }
 
     @Override
-    public List<Transaction> getTransactionByAccount(Integer accountNumber) {
-//        System.out.println(oAuth2AccessToken.getValue());
-//        System.out.println(oAuth2AccessToken.isExpired());
-//        System.out.println(oAuth2AccessToken);
+    public List<Transaction> getTransactionByAccount(Integer accountNumber) throws Exception {
         if(oAuth2AccessToken == null || oAuth2AccessToken.isExpired()) {
             System.out.println("Create new token");
             oAuth2AccessToken = getACMEBankingAuthToken();
@@ -88,7 +85,7 @@ public class RESTTransactionsAPIClient implements TransactionApiClient {
                     .bodyToMono(OBReadTransaction6.class)
                     .block();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            throw ex;
         }
 
         if (tranResponse != null && tranResponse.getData() != null)

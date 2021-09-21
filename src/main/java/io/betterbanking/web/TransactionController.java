@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -23,8 +23,8 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping("/accounts/{accountNumber}/transactions")
-    public List<Transaction> findAllByAccountNumber(@PathVariable("accountNumber") final Integer accountNumber) {
+    @GetMapping("/{accountNumber}")
+    public List<Transaction> findAllByAccountNumber(@PathVariable("accountNumber") final Integer accountNumber) throws Exception{
         return transactionService.findAllByAccountNumber(accountNumber);
 
     }

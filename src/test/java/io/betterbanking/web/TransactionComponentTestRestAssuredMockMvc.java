@@ -38,7 +38,7 @@ class TransactionComponentTestRestAssuredMockMvc {
 
     @Test
     @DisplayName("TestEndToEnd2 using RestAssuredMockMvc")
-    public void  TestEndToEnd2(){
+    public void  TestEndToEnd2() throws Exception{
         Mockito.when(transactionService.findAllByAccountNumber(anyInt())).thenReturn(
                 List.of(
                         Transaction

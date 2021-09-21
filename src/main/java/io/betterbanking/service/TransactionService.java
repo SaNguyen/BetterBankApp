@@ -19,17 +19,22 @@ public class TransactionService {
     @Autowired
     private MerchantDetailsRepository  merchantDetailsRepository;
 
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     @CircuitBreaker(name = "transactionService", fallbackMethod = "fallbackMethod")
-    public List<Transaction> findAllByAccountNumber(final Integer accountNumber) {
+    public List<Transaction> findAllByAccountNumber(final Integer accountNumber) throws Exception {
         List<Transaction> transactionList = transactionApiClient.getTransactionByAccount(accountNumber);
         transactionList.forEach(t-> {
+
             t.setMerchantLogo(merchantDetailsRepository.getMerchantLogo(t.getMerchantName()).orElse(""));
+
         });
         return transactionList;
     }
-
+    //fallback ==> get data from local
     private List<Transaction> fallbackMethod(final Integer accountNumber, Exception e){
         System.out.println("OpenBanking service is down!");
-        return Collections.emptyList();
+        return transactionRepository.findAllByAccountNumber(accountNumber);
     }
 }

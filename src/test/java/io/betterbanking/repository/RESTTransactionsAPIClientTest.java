@@ -47,7 +47,7 @@ public class RESTTransactionsAPIClientTest {
         Mockito.when(mockAccessToken.getValue()).thenReturn("1234567890");
         Mockito.when(mockAccessToken.isExpired()).thenReturn(false);
 
-        RESTTransactionsAPIClient.setoAuth2AccessToken(mockAccessToken);
+//        RESTTransactionsAPIClient.setoAuth2AccessToken(mockAccessToken);
 
         WebClient webClient = WebClient.create(baseUrl);
         transactionApiClient = new RESTTransactionsAPIClient(webClient);

@@ -12,4 +12,7 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction,Integer> {
 //    @Query("select t from Transaction t where t.accountNumber=:accountNumber")
     List<Transaction> findAllByAccountNumber(Integer accountNumber);
+
+    @Query("select distinct t.accountNumber from Transaction t")
+    List<Integer> findAllAccount();
 }

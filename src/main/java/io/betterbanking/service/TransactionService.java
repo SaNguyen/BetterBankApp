@@ -64,7 +64,7 @@ public class TransactionService {
         return testnetTrans;
     }
 
-    @Scheduled(cron = "*/30 * * * * *")
+//    @Scheduled(cron = "*/30 * * * * *")
     public void pollRemoteTransactions(){
         log.info("Start polling all transactions from remote");
         List<Integer> accounts = transactionRepository.findAllAccount();

@@ -3,11 +3,12 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 	id "org.openapi.generator" version "5.1.1"
-
+	id "com.palantir.docker" version "0.22.1"
 }
 
 group = 'io.better-banking'
 version = '1.0.1'
+description = 'better-banking-by-sanguyen'
 sourceCompatibility = '11'
 
 configurations {
@@ -64,6 +65,11 @@ dependencies {
 // https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt
 	implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
 	implementation 'org.springframework.security:spring-security-data:5.4.8'
+
+//	compileOnly 'org.springframework.data:spring-data-redis:2.2.7.RELEASE'
+//	compileOnly 'io.lettuce:lettuce-core:6.0.0.RELEASE'
+	compileOnly 'org.springframework.boot:spring-boot-starter-cache:2.4.10'
+	compileOnly 'org.springframework.boot:spring-boot-starter-data-redis:2.4.10'
 }
 
 dependencyManagement {
@@ -112,3 +118,9 @@ tasks.register('deleteGenerated', Delete) {
 }
 
 clean.dependsOn deleteGenerated
+
+docker{
+	name "better-banking"
+	file "build/libs/better-banking-${project.version}.jar"
+
+}

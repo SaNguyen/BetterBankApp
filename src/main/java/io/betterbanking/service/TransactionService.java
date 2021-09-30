@@ -8,6 +8,8 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -30,24 +32,18 @@ public class TransactionService {
 //    @Value("${testnet.integration.scheduled.poll}")
 //    private final String cronJob;
 
+    @Cacheable(cacheNames = "transactions")
     @CircuitBreaker(name = "transactionService", fallbackMethod = "fallbackMethod")
     public List<Transaction> findAllByAccountNumber(final Integer accountNumber) throws Exception {
-//        List<Transaction> transactionList = transactionApiClient.getTransactionByAccount(accountNumber);
-//        transactionList.forEach(t-> {
-//            t.setMerchantLogo(merchantDetailsRepository.getMerchantLogo(t.getMerchantName()).orElse(""));
-//        });
-//        return transactionList;
-       List<Transaction> transactionList =  transactionRepository.findAllByAccountNumber(accountNumber);
-       if(transactionList.isEmpty()){
-           throw new Exception("No transaction");
-       }
-       return transactionList;
+        log.info("inside findAllByAccountNumber, get data from remote");
+        return pollByAccountNumber(accountNumber);
+
     }
     //fallback ==> get data from local
     private List<Transaction> fallbackMethod(final Integer accountNumber, final Throwable throwable) throws Exception{
-            return pollByAccountNumber(accountNumber);
+        log.info("falling back to local database to get transactions");
+        return transactionRepository.findAllByAccountNumber(accountNumber);
     }
-
 
     public List<Transaction> pollByAccountNumber(Integer accountNumber) throws Exception{
         List<Transaction> testnetTrans =  transactionApiClient.getTransactionByAccount(accountNumber);

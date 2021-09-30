@@ -3,6 +3,7 @@ package io.betterbanking.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -11,7 +12,8 @@ import java.util.Objects;
 @Builder
 @Data
 @Entity
-public class Transaction {
+@Table(name="transactions")
+public class Transaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
